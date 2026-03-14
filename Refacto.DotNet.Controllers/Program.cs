@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Refacto.DotNet.Controllers.Database.Context;
+using Refacto.DotNet.Controllers.Mapper;
+using Refacto.DotNet.Controllers.Repositories.Orders;
+using Refacto.DotNet.Controllers.Repositories.Products;
 using Refacto.DotNet.Controllers.Services;
 using Refacto.DotNet.Controllers.Services.Impl;
+using Refacto.DotNet.Controllers.Services.Orders;
+using Refacto.DotNet.Controllers.Services.Products;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +23,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     _ = options.UseInMemoryDatabase($"InMemoryDb");
 });
 
+
+
+
+#region Dependency injection 
+//--Services
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrdersService, OrdersService>();
+
+
+//Repository
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+
+#endregion
+
+
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<RefactoringMapper>());
+
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,8 +50,6 @@ if (app.Environment.IsDevelopment())
     _ = app.UseSwagger();
     _ = app.UseSwaggerUI();
 }
-
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
