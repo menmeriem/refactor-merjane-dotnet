@@ -18,7 +18,7 @@ namespace Refacto.DotNet.Controllers.Services.Products
 
         public ProductService(INotificationService notificationService, AppDbContext ctx, IMapper mapper)
         {
-            _notificationService = _notificationService;
+            _notificationService = notificationService;
             _dbContext = ctx;
             _mapper = mapper;
         }
